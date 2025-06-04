@@ -58,7 +58,7 @@ La estructura mínima del repo queda así:
 │   ├── Dockerfile
 │   └── requirements.txt
 ├── docker-compose.yml
-└── README.md          ← guía abajo
+└── README.md 
 ```
 
 ### 2.4 Traefik ⇄ routing
