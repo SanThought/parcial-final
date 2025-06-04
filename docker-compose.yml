@@ -1,0 +1,79 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks: [backend]
+    labels:
+      - "traefik.enable=true"
+
+      # Route requests from /monitor → RabbitMQ UI
+      - "traefik.http.routers.rabbitmq.rule=PathPrefix(`/monitor`)"
+      - "traefik.http.routers.rabbitmq.entrypoints=web"
+      - "traefik.http.routers.rabbitmq.middlewares=rabbitmq-stripprefix@docker"
+      - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"
+
+      # Middleware to strip `/monitor` prefix
+      - "traefik.http.middlewares.rabbitmq-stripprefix.stripPrefix.prefixes=/monitor"
+
+  api:
+    build: ./api
+    container_name: api
+    depends_on: [rabbitmq]
+    environment:
+      RABBITMQ_URL: amqp://user:password@rabbitmq:5672/
+      BASIC_AUTH_USERNAME: admin
+      BASIC_AUTH_PASSWORD: secret
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      - "traefik.http.services.api.loadbalancer.server.port=8000"
+    networks: [backend]
+
+  worker:
+    build: ./worker
+    container_name: worker
+    depends_on: [rabbitmq]
+    restart: unless-stopped
+    environment:
+      RABBITMQ_URL: amqp://user:password@rabbitmq:5672/
+    volumes:
+      - processed_messages:/data
+    networks: [backend]
+
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=backend"
+      - "--entrypoints.web.address=:80"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=admin@example.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+    networks: [backend]
+
+networks:
+  backend:
+
+volumes:
+  rabbitmq_data:
+  processed_messages:
+  traefik_letsencrypt:
+
