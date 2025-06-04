@@ -89,7 +89,7 @@ Todo se declara con **labels** (no se necesita archivo `.toml`).
   
   ```bash
   git clone <repo>
-  cd Parcial2
+  cd parcial-final
   docker compose up --build -d
   ```
   
