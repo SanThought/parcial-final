@@ -52,13 +52,6 @@ La estructura mínima del repo queda así:
 ├── api/
 │   ├── app.py
 │   ├── Dockerfilegraph TD
-  Client[Client (curl or browser)] --> Traefik[Traefik (port 80)]
-  Traefik --> API[FastAPI API (port 8000)]
-  Traefik --> RMQ_UI[RabbitMQ UI (port 15672)]
-  API --> RMQ_Broker[RabbitMQ Broker (port 5672)]
-  RMQ_Broker --> Worker[Worker (Python)]
-  Worker --> Volume[processed_messages (volume)]
-
 │   └── requirements.txt
 ├── worker/
 │   ├── worker.py
