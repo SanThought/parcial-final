@@ -2,16 +2,16 @@
 
 Sobre los conceptos teóricos, acá están las respuestas a la parte teórica redactas a mano y elaboradas coloquial pero técniicamente:
 
-rabbit MQ es un message-broker, aen español podríamos llamarlo "gestor o repartidor de mensages", en inglés broker es un intermediario que gestiona actividades o procesos para sus clientes, así rabbit gestiona consumidores y productores, y de paso aísla fallos
-Una cola es un proceso más organizado de punto-a-punto, mientras que fanout sencillamente entrega copias de un mensaje a todos los consumidores suscritos, cola es mejor para ambientes que requieren seguridad y orden, fanout es mejor para broadcast
-¿Qué es una Dead Letter Queue (DLQ) y cómo se configura? Una cola a la que RabbitMQ redirige mensajes que expiran, superan reintentos o son rechazados (con requeue=false.)
+- rabbit MQ es un message-broker, aen español podríamos llamarlo "gestor o repartidor de mensages", en inglés broker es un intermediario que gestiona actividades o procesos para sus clientes, así rabbit gestiona consumidores y productores, y de paso aísla fallos
+- Una cola es un proceso más organizado de punto-a-punto, mientras que fanout sencillamente entrega copias de un mensaje a todos los consumidores suscritos, cola es mejor para ambientes que requieren seguridad y orden, fanout es mejor para broadcast
+- ¿Qué es una Dead Letter Queue (DLQ) y cómo se configura? Una cola a la que RabbitMQ redirige mensajes que expiran, superan reintentos o son rechazados (con requeue=false.)
 
-Diferencia volumen vs bind-mount: **Volumen:** gestionado por Docker; ruta en /var/lib/docker/volumes; portabilidad y driver plugins. **Bind mount:** ruta real del host; refleja permisos y estructura del host. Ej.: - ./src:/app/src.
+- Diferencia volumen vs bind-mount: **Volumen:** gestionado por Docker; ruta en /var/lib/docker/volumes; portabilidad y driver plugins. **Bind mount:** ruta real del host; refleja permisos y estructura del host. Ej.: - ./src:/app/src.
 **Efecto de network_mode: host** : El contenedor comparte la pila de red del host: mismos puertos, IP y tablas. Pros: latencia mínima; Contras: sin aislamiento puede chocar con puertos ocupados en Mac/Windows.
 
 Traefik
-Rol en microservicios	Reverse proxy / API Gateway: auto-descubre servicios (como labels), balancea carga, termina TLS, hace path routing, aplica middlewares (rate-limit, auth, …).
-**Endpoints TLS automáticos**	Se habilita ACME en la línea de comandos o traefik.yml:
+- Rol en microservicios	Reverse proxy / API Gateway: auto-descubre servicios (como labels), balancea carga, termina TLS, hace path routing, aplica middlewares (rate-limit, auth, …).
+- **Endpoints TLS automáticos**	Se habilita ACME en la línea de comandos o traefik.yml:
 certificatesResolvers.myresolver.acme.tlsChallenge=true y entryPoints.websecure.address=:443. Luego se etiqueta un router: traefik.http.routers.api.tls.certresolver=myresolver. Traefik solicita y renueva los certificados de Let’s Encrypt automáticament
 
 ## Evidencias
