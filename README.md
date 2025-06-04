@@ -16,16 +16,18 @@ certificatesResolvers.myresolver.acme.tlsChallenge=true y entryPoints.websecure.
 
 ## Evidencias
 
-| Paso | Screenshot |
-| --- | --- |
-| Contenedores levantados |  ![Screenshot from 2025-06-03 18-46-43](https://github.com/user-attachments/assets/cea75f85-f160-4c53-b62f-2e48e0ce6ab3)
-   |
-| Llamada exitosa al endpoint |  ![Screenshot from 2025-06-03 18-57-11](https://github.com/user-attachments/assets/05190386-0a43-4b5d-b758-bba710fee90f) 
-  |
-| Archivo creado por el worker |  ![Screenshot from 2025-06-03 19-17-52](https://github.com/user-attachments/assets/7688d862-5d79-4f76-9ed6-758eb9cf8789) 
-  |
-| RabbitMQ dashboard |  ![Screenshot from 2025-06-03 19-30-54](https://github.com/user-attachments/assets/4b279c64-478d-4652-be12-cacb9cb12abe) 
-   |
+###Contenedores levantados
+![Screenshot from 2025-06-03 18-46-43](https://github.com/user-attachments/assets/cea75f85-f160-4c53-b62f-2e48e0ce6ab3)
+
+### Llamada exitosa al endpoint
+![Screenshot from 2025-06-03 18-57-11](https://github.com/user-attachments/assets/05190386-0a43-4b5d-b758-bba710fee90f) 
+
+### Archivo creado por el worker
+![Screenshot from 2025-06-03 19-17-52](https://github.com/user-attachments/assets/7688d862-5d79-4f76-9ed6-758eb9cf8789) 
+
+### RabbitMQ dashboard
+![Screenshot from 2025-06-03 19-30-54](https://github.com/user-attachments/assets/4b279c64-478d-4652-be12-cacb9cb12abe) 
+
 
 ---
 
@@ -33,13 +35,13 @@ certificatesResolvers.myresolver.acme.tlsChallenge=true y entryPoints.websecure.
 
 ```mermaid
 graph TD
-  Client[Client (curl or browser)] --> Traefik[Traefik (port 80)]
-  Traefik --> API[FastAPI API (port 8000)]
-  Traefik --> RMQ_UI[RabbitMQ UI (port 15672)]
-  API --> RMQ_Broker[RabbitMQ Broker (port 5672)]
-  RMQ_Broker --> Worker[Worker (Python)]
-  Worker --> Volume[processed_messages (volume)]
->(volume)]]
+  client[Client] --> traefik[Traefik]
+  traefik --> api[API]
+  traefik --> rmq_ui[RabbitMQ_UI]
+  api --> rmq_broker[RabbitMQ_Broker]
+  rmq_broker --> worker[Worker]
+  worker --> volume[processed_messages]
+
 
 ```
 
